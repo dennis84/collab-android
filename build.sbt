@@ -17,7 +17,9 @@ proguardOptions in Android ++= Seq(
   "-dontwarn sun.misc.Unsafe",
   "-dontwarn sun.relfect.Reflection",
   "-keep class spray.**",
-  "-keep class akka.**")
+  "-keep class akka.**",
+  "-keep class akka.** { <init>(...); }",
+  "-keepclassmembers class akka.**")
 
 libraryDependencies ++= Seq(
   "org.scaloid"         %% "scaloid"     % "3.1-8-RC1",

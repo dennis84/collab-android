@@ -1,5 +1,4 @@
-package collab
-package android
+package collab.android
 
 import org.scaloid.common._
 

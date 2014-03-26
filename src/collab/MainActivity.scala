@@ -1,26 +1,31 @@
-package collab
-package android
+package collab.android
 
 import org.scaloid.common._
+import android.content.Context
 import akka.actor._
-import com.typesafe.config.ConfigFactory
-import java.io.{InputStreamReader, BufferedReader}
 
 class MainActivity extends SActivity {
 
   onCreate {
-    // val conf = new BufferedReader(
-    //   new InputStreamReader((getResources.openRawResource(R.raw.akka))))
-
-    // val system = ActorSystem("actor-system",
-    //   ConfigFactory.load(ConfigFactory.parseReader(conf)))
-
     contentView = new SVerticalLayout {
       val room = SEditText()
       SButton("Connect", join(room.getText.toString))
     } padding 20.dip
+
+    val system = getApplication.asInstanceOf[CollabApplication].system
+    val actor = system.actorOf(Props(new TestActor(getApplicationContext)))
+
+    actor ! "Hello World"
   }
 
   def join(id: String) =
     startActivity(SIntent[EditorActivity].putExtra("room", id))
+}
+
+class TestActor(c: Context) extends Actor {
+  implicit val ctx = c
+
+  def receive = {
+    case x: String ⇒ toast(x)
+  }
 }
