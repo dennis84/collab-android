@@ -12,7 +12,7 @@ class MainActivity extends SActivity {
       SButton("Connect", join(room.getText.toString))
     } padding 20.dip
 
-    val system = getApplication.asInstanceOf[CollabApplication].system
+    val system = getApplication.asInstanceOf[CollabApplication].unsafeSystem
     val actor = system.actorOf(Props(new TestActor(getApplicationContext)))
 
     actor ! "Hello World"
