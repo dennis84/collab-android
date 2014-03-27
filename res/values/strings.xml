@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">Collab</string>
+  <string name="endpoint">ws://polar-woodland-4270.herokuapp.com</string>
 </resources>
