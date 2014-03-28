@@ -5,12 +5,9 @@ import org.scaloid.common._
 class MainActivity extends SActivity {
 
   onCreate {
-    contentView = new SVerticalLayout {
-      val room = SEditText()
-      SButton("Connect", join(room.getText.toString))
-    } padding 20.dip
+    setContentView(R.layout.main)
+    find[SListView](R.id.left_drawer).setAdapter(
+      SArrayAdapter("Foo", "Bar", "Baz")
+        .dropDownStyle(_.textSize(25 dip)))
   }
-
-  def join(id: String) =
-    startActivity(SIntent[EditorActivity].putExtra("room", id))
 }

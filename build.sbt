@@ -22,6 +22,7 @@ proguardOptions in Android ++= Seq(
   "-keepclassmembers class akka.**")
 
 libraryDependencies ++= Seq(
+  "com.android.support" % "support-v4"   % "18.0.0",
   "org.scaloid"         %% "scaloid"     % "3.1-8-RC1",
   "io.spray"            %% "spray-json"  % "1.2.5",
   "io.spray"            %  "spray-can"   % "1.2.1",
