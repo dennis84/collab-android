@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="file:///android_asset/main.css">
+  </head>
+
+  <body>
+    <pre><code>
+      onCreate {
+        contentView = new SVerticalLayout {
+          val room = SEditText()
+          SButton("Connect", join(room.getText.toString))
+        } padding 20.dip
+      }
+    </code></pre>
+  </body>
+</html>
