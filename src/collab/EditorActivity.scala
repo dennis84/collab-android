@@ -6,9 +6,10 @@ import android.webkit.WebView
 class EditorActivity extends SActivity {
 
   onCreate {
-    val webView = new WebView(this)
-    webView.getSettings.setJavaScriptEnabled(true)
-    webView loadUrl "file:///android_asset/index.html"
-    setContentView(webView)
+    contentView = new SVerticalLayout {
+      val editor = SWebView()
+      editor.getSettings.setJavaScriptEnabled(true)
+      editor loadUrl "file:///android_asset/index.html"
+    }
   }
 }
