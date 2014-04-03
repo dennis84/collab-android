@@ -1,37 +1,29 @@
 package collab.android
 
-import android.util.Log
+import android.text.Html
 import org.scaloid.common._
-import android.webkit.WebView
-import de.tavendo.autobahn._
+import colors._
 
 class EditorActivity extends SActivity {
 
-  lazy val ws = new WebSocketConnection()
-
   onCreate {
-    val editor = new SWebView()
+    val code = """|object HelloWorld extends App {
+                  |  println("Hello World!")
+                  |}
+                  |""".stripMargin
+
+    val html = Colors(code, "scala") {
+      case WordCode(v)       ⇒ s"""<font color="blue">$v</font>"""
+      case TextCode(v)       ⇒ s"""<font color="green">$v</font>"""
+      case WhitespaceCode(v) ⇒ v replace (" ", "&nbsp;")
+      case c: Code           ⇒ c.value
+    } replace ("\n", "<br>")
+
+    val spannedCode = Html.fromHtml(
+      """<font face="monospace">""" + html + "</font>")
 
     contentView = new SVerticalLayout {
-      this += editor
-    }
-
-    editor.getSettings.setJavaScriptEnabled(true)
-    editor loadUrl "file:///android_asset/editor.html"
-
-    val uri = "ws://polar-woodland-4270.herokuapp.com/foo"
-
-    ws.connect(uri, new WebSocketConnectionHandler() {
-      override def onTextMessage(data: String) {
-        editor loadUrl "javascript:updateCode('" + data + "', 'scala')"
-      }
-    })
-  }
-
-  override def onDestroy() {
-    super.onDestroy
-    if(ws.isConnected) {
-      ws.disconnect
+      STextView(spannedCode)
     }
   }
 }
