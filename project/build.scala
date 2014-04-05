@@ -19,6 +19,7 @@ object CollabBuild extends Build {
       "-dontwarn sun.relfect.Reflection",
       "-dontwarn org.joda.time.**",
       "-dontwarn org.w3c.**",
+      "-keep class scala.collection.JavaConversions",
       "-keep class spray.**",
       "-keep class akka.**",
       "-keep class akka.** { <init>(...); }",
@@ -39,8 +40,8 @@ object CollabBuild extends Build {
       "com.android.support" %  "support-v4" % "18.0.0",
       "org.scaloid"         %% "scaloid"    % "3.1-8-RC1",
       "d01100100"           %% "colors"     % "0.1",
+      "de.tavendo"          %  "autobahn-android" % "0.5.2-SNAPSHOT",
       "io.spray"            %% "spray-json" % "1.2.5",
-      "io.spray"            %  "spray-can"  % "1.2.1",
       "com.typesafe.akka"   %% "akka-actor" % "2.2.3"),
     resolvers ++= Seq(
       "sonatype" at "http://oss.sonatype.org/content/repositories/snapshots/",

@@ -7,7 +7,7 @@ class MainActivity extends SActivity {
   onCreate {
     contentView = new SVerticalLayout {
       val room = SEditText()
-      SButton("Connect", join(room.getText.toString))
+      SButton("Connect", join(room.text.toString))
     } padding 20.dip
   }
 
