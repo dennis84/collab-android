@@ -12,5 +12,6 @@ class MainActivity extends SActivity {
   }
 
   def join(id: String) =
-    startActivity(SIntent[EditorActivity].putExtra("room", id))
+    startService(SIntent[ConnectionService].putExtra("uri",
+      getString(R.string.endpoint) + "/" + id))
 }

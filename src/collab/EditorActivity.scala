@@ -2,13 +2,15 @@ package collab.android
 
 import android.text.Html
 import org.scaloid.common._
+import spray.json._
 import colors._
 
 class EditorActivity extends SActivity {
+  import MessageProtocol._
 
   onCreate {
-    val code = new STextView()
-    val lineNumbers = new STextView()
+    val code = new STextView
+    val lineNumbers = new STextView
 
     contentView = new SRelativeLayout {
       this += lineNumbers
@@ -16,9 +18,10 @@ class EditorActivity extends SActivity {
       this += code
     }
 
-    broadcastReceiver(Connection.Message) { (context, intent) ⇒
-      val input = intent.getStringExtra("code")
-      val html = Colors(input, "scala") {
+    broadcastReceiver(Connection.Code) { (context, intent) ⇒
+      val message = intent.getStringExtra("data").asJson.convertTo[CodeMessage]
+
+      val html = Colors(message.buffer, message.lang) {
         case WordCode(v)       ⇒ s"""<font color="${Theme.Violet}">$v</font>"""
         case TextCode(v)       ⇒ s"""<font color="${Theme.Green}">$v</font>"""
         case CommentCode(v)    ⇒ s"""<font color="${Theme.Base1}">$v</font>"""
@@ -30,7 +33,7 @@ class EditorActivity extends SActivity {
       val spannedCode = Html.fromHtml(
         """<font face="monospace">""" + html + "</font>")
 
-      val lineNumbersHtml = (1 to (input split "\n").length) map { n ⇒
+      val lineNumbersHtml = (1 to (message.buffer split "\n").length) map { n ⇒
         s"""<font color="${Theme.Base1}">$n</font>"""
       } mkString("<br>")
 
@@ -40,7 +43,5 @@ class EditorActivity extends SActivity {
       code text spannedCode
       lineNumbers text spannedLineNumbers
     }
-
-    startService(SIntent[ConnectionService])
   }
 }

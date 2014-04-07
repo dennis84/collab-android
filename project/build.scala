@@ -34,6 +34,7 @@ object CollabBuild extends Build {
       "-unchecked",
       "-deprecation",
       "-feature",
+      "-language:_",
       "-encoding",
       "utf8"),
     libraryDependencies ++= Seq(
