@@ -1,6 +1,7 @@
 package collab.android
 
 import android.text.Html
+import android.view.Gravity
 import org.scaloid.common._
 import spray.json._
 import colors._
@@ -13,7 +14,9 @@ class EditorActivity extends SActivity {
     val lineNumbers = new STextView
 
     contentView = new SRelativeLayout {
+      lineNumbers.gravity(Gravity.RIGHT)
       this += lineNumbers
+      code.horizontallyScrolling(true)
       code.<<.rightOf(lineNumbers).>>.marginLeft(25 sp)
       this += code
     }
