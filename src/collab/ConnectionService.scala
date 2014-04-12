@@ -9,7 +9,10 @@ import spray.json._
 
 object Connection {
 
-  def Opened = "collab.android.Opened"
+  def Join   = "collab.android.Join"
+  def Joined = "collab.android.Joined"
+  def Leave  = "collab.android.Leave"
+  def Leaved = "collab.android.Leaved"
   def Code   = "collab.android.Code"
 }
 
@@ -19,20 +22,23 @@ class ConnectionService extends SService {
 
   def onBind(intent: Intent): IBinder = null
 
-  override def onStartCommand(intent: Intent, flags: Int, startId: Int) = {
+  broadcastReceiver(Connection.Join) { (context, intent) ⇒
     connect(intent.getStringExtra("uri"))
-    android.app.Service.START_STICKY
+  }
+
+  broadcastReceiver(Connection.Leave) { (context, intent) ⇒
+    ws.disconnect
   }
 
   def connect(uri: String) {
     ws.connect(uri, new WebSocketConnectionHandler {
       override def onOpen {
-        startActivity(SIntent[EditorActivity]
-          .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        gossip(Connection.Joined)
       }
 
       override def onClose(code: Int, reason: String) {
         Log.e("WS", reason)
+        gossip(Connection.Leaved)
       }
 
       override def onTextMessage(data: String) {
@@ -44,6 +50,8 @@ class ConnectionService extends SService {
       }
     })
   }
+
+  def gossip(action: String) = sendBroadcast(new Intent(action))
 
   def gossip(action: String, sender: String, data: JsValue) =
     sendBroadcast(new Intent(action).putExtra("data", data.prettyPrint))
