@@ -44,7 +44,9 @@ class ConnectionService extends SService {
       override def onTextMessage(data: String) {
         data.asJson.asJsObject.getFields("t", "s", "d") match {
           case Seq(JsString("code"), JsString(s), d) ⇒
-            gossip(Connection.Code, s, d)
+            gossip(Message.Code, s, d.prettyPrint)
+          case Seq(JsString("join"), JsString(s), JsString(m)) ⇒
+            gossip(Message.Join, s, m) 
           case _ ⇒ Log.e("WS", "parse error: " + data)
         }
       }
@@ -53,6 +55,6 @@ class ConnectionService extends SService {
 
   def gossip(action: String) = sendBroadcast(new Intent(action))
 
-  def gossip(action: String, sender: String, data: JsValue) =
-    sendBroadcast(new Intent(action).putExtra("data", data.prettyPrint))
+  def gossip(action: String, sender: String, data: String) =
+    sendBroadcast(new Intent(action).putExtra("data", data))
 }

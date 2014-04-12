@@ -2,10 +2,16 @@ package collab.android
 
 import spray.json._
 
+object Message {
+
+  def Join = "collab.android.message.Join"
+  def Code = "collab.android.message.Code"
+}
+
 case class CodeMessage(
   val buffer: String,
   val path: String,
-  val lang: String) extends java.io.Serializable
+  val lang: String)
 
 object MessageProtocol extends DefaultJsonProtocol {
 
