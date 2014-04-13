@@ -13,7 +13,6 @@ object Connection {
   def Joined = "collab.android.Joined"
   def Leave  = "collab.android.Leave"
   def Leaved = "collab.android.Leaved"
-  def Code   = "collab.android.Code"
 }
 
 class ConnectionService extends SService {

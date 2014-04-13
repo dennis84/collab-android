@@ -1,6 +1,7 @@
 package collab.android
 
 import java.util.ArrayList
+import android.os.Bundle
 import android.text.Html
 import android.view.Gravity
 import android.graphics.Typeface
@@ -15,8 +16,17 @@ import colors._
 
 class EditorActivity extends SActivity {
   import MessageProtocol._
+  var code: STextView = _
+  var lineNumbers: STextView = _
 
-  onCreate {
+  override def onCreate(savedInstanceState: Bundle) {
+    super.onCreate(savedInstanceState)
+
+    if(null != savedInstanceState) {
+      code text savedInstanceState.getCharSequence("buffer")
+      lineNumbers text savedInstanceState.getCharSequence("line_numbers")
+    }
+
     val drawer = new DrawerLayout(this)
     val members = new ArrayAdapter[String](
       this, R.layout.member, new ArrayList[String]())
@@ -31,8 +41,8 @@ class EditorActivity extends SActivity {
       this += list
     }.backgroundColor(Color.WHITE)
 
-    val code = new STextView
-    val lineNumbers = new STextView
+    code = new STextView
+    lineNumbers = new STextView
     val font = Typeface.createFromAsset(getAssets,
       "FantasqueSansMono-Regular.ttf")
 
@@ -64,7 +74,6 @@ class EditorActivity extends SActivity {
       val member = intent.getStringExtra("data")
       members.add(member)
       members.notifyDataSetChanged
-      android.util.Log.e("JOIN", member)
     }
 
     broadcastReceiver(Message.Code) { (context, intent) ⇒
@@ -89,5 +98,11 @@ class EditorActivity extends SActivity {
       code text spannedCode
       lineNumbers text spannedLineNumbers
     }
+  }
+
+  override def onSaveInstanceState(savedInstanceState: Bundle) {
+    super.onSaveInstanceState(savedInstanceState)
+    savedInstanceState.putCharSequence("buffer", code text)
+    savedInstanceState.putCharSequence("line_numbers", lineNumbers text)
   }
 }
