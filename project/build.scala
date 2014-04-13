@@ -38,12 +38,12 @@ object CollabBuild extends Build {
       "-encoding",
       "utf8"),
     libraryDependencies ++= Seq(
-      "com.android.support" %  "support-v4" % "18.0.0",
-      "org.scaloid"         %% "scaloid"    % "3.1-8-RC1",
-      "d01100100"           %% "colors"     % "0.1",
+      "com.android.support" %  "support-v4"       % "18.0.0",
+      "org.scaloid"         %% "scaloid"          % "3.1-8-RC1",
+      "d01100100"           %% "colors"           % "0.1",
       "de.tavendo"          %  "autobahn-android" % "0.5.2-SNAPSHOT",
-      "io.spray"            %% "spray-json" % "1.2.5",
-      "com.typesafe.akka"   %% "akka-actor" % "2.2.3"),
+      "io.spray"            %% "spray-json"       % "1.2.5",
+      "com.typesafe.akka"   %% "akka-actor"       % "2.2.3"),
     resolvers ++= Seq(
       "sonatype" at "http://oss.sonatype.org/content/repositories/snapshots/",
       "typesafe" at "http://repo.typesafe.com/typesafe/releases/",
