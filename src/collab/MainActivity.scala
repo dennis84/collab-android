@@ -4,7 +4,7 @@ import android.content.Intent
 import org.scaloid.common._
 import spray.json._
 
-class MainActivity extends SActivity {
+class MainActivity extends CollabActivity {
   import MessageProtocol._
 
   onCreate {
@@ -13,16 +13,11 @@ class MainActivity extends SActivity {
   }
 
   broadcastReceiver(Message.Members)((c, i) ⇒
-    fragment[MembersFragment](R.id.members) reset (
-      i.getStringExtra("data").asJson.convertTo[List[Member]]))
+    fragment[MembersFragment](R.id.members) reset (i.data[List[Member]]))
 
   broadcastReceiver(Message.Join)((c, i) ⇒
-    fragment[MembersFragment](R.id.members) add (
-      Member(i getStringExtra "data")))
+    fragment[MembersFragment](R.id.members) add (Member(i.data)))
 
   broadcastReceiver(Message.Code)((c, i) ⇒
-    fragment[EditorFragment](R.id.editor) update (i getStringExtra "data"))
-
-  def fragment[T](res: Int) =
-    getFragmentManager.findFragmentById(res).asInstanceOf[T]
+    fragment[EditorFragment](R.id.editor) update (i.data))
 }
