@@ -8,7 +8,7 @@ class StartActivity extends SActivity {
 
   onCreate {
     val room = new SEditText
-    val joinButton = new SButton("Connect", join(room.text.toString))
+    val joinButton = new SButton("Join", join(room.text.toString))
     val leaveButton = new SButton("Leave", leave)
     val joinLayout = new SVerticalLayout
     val leaveLayout = new SVerticalLayout
@@ -26,15 +26,15 @@ class StartActivity extends SActivity {
       this += leaveLayout
     }
 
-    broadcastReceiver(Connection.Join) { (context, intent) ⇒
+    broadcastReceiver(Connection.Joined) { (c, i) ⇒
       startActivity(SIntent[MainActivity])
-      joinLayout.visibility(View.GONE)
-      leaveLayout.visibility(View.VISIBLE)
+      joinLayout visibility View.GONE
+      leaveLayout visibility View.VISIBLE
     }
 
-    broadcastReceiver(Connection.Leaved) { (context, intent) ⇒
-      joinLayout.visibility(View.VISIBLE)
-      leaveLayout.visibility(View.GONE)
+    broadcastReceiver(Connection.Leaved) { (c, i) ⇒
+      joinLayout visibility View.VISIBLE
+      leaveLayout visibility View.GONE
     }
 
     startService(SIntent[ConnectionService])

@@ -30,8 +30,8 @@ class EditorFragment extends Fragment {
     val font = Typeface.createFromAsset(getActivity.getAssets,
       "FantasqueSansMono-Regular.ttf")
 
-    code.setTypeface(font)
-    lineNumbers.setTypeface(font)
+    code setTypeface font
+    lineNumbers setTypeface font
 
     if(null != savedInstanceState) {
       code setText savedInstanceState.getCharSequence("buffer")
@@ -46,7 +46,7 @@ class EditorFragment extends Fragment {
   }
 
   def update(message: String) {
-    val m = message.asJson.convertTo[CodeMessage]
+    val m = message.asJson.convertTo[Code]
     val html = Colors(m.buffer, m.lang) {
       case WordCode(v)       ⇒ s"""<font color="${Theme.Violet}">$v</font>"""
       case TextCode(v)       ⇒ s"""<font color="${Theme.Green}">$v</font>"""
@@ -56,13 +56,13 @@ class EditorFragment extends Fragment {
       case c: Code           ⇒ c.value
     } replace ("\n", "<br>")
 
-    val spannedCode = Html.fromHtml(html)
+    val spannedCode = Html fromHtml html
 
     val lineNumbersHtml = (1 to (m.buffer split "\n").length) map { n ⇒
       s"""<font color="${Theme.Base1}">$n&nbsp;</font>"""
     } mkString("<br>")
 
-    val spannedLineNumbers = Html.fromHtml(lineNumbersHtml)
+    val spannedLineNumbers = Html fromHtml lineNumbersHtml
 
     code setText spannedCode
     lineNumbers setText spannedLineNumbers
