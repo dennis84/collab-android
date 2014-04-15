@@ -47,6 +47,8 @@ class ConnectionService extends SService {
             gossip(Message.Join, s, m)
           case Seq(JsString("members"), JsString(s), m) ⇒
             gossip(Message.Members, s, m.prettyPrint)
+          case Seq(JsString("cursor"), JsString(s), m) ⇒
+            gossip(Message.Cursor, s, m.prettyPrint)
           case _ ⇒ Log.e("WS", "parse error: " + data)
         }
       }
@@ -55,6 +57,10 @@ class ConnectionService extends SService {
 
   def gossip(action: String) = sendBroadcast(new Intent(action))
 
-  def gossip(action: String, sender: String, data: String) =
-    sendBroadcast(new Intent(action).putExtra("data", data))
+  def gossip(action: String, sender: String, data: String) = {
+    val intent = new Intent(action)
+    intent.putExtra("data", data)
+    intent.putExtra("sender", sender)
+    sendBroadcast(intent)
+  }
 }

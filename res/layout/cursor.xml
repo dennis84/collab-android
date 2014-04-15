@@ -1,0 +1,14 @@
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:collab="http://schemas.android.com/apk/res/collab.android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content" >
+  <TextView
+    android:id="@+id/nickname"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+  <collab.android.CursorView
+    android:id="@+id/cursor"
+    android:layout_width="9sp"
+    android:layout_height="18sp" />
+</RelativeLayout>

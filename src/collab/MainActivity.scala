@@ -16,8 +16,14 @@ class MainActivity extends CollabActivity {
     fragment[MembersFragment](R.id.members) reset (i.data[List[Member]]))
 
   broadcastReceiver(Message.Join)((c, i) ⇒
-    fragment[MembersFragment](R.id.members) add (Member(i.data)))
+    fragment[MembersFragment](R.id.members) add (Member(i.getStringExtra("data"))))
 
   broadcastReceiver(Message.Code)((c, i) ⇒
-    fragment[EditorFragment](R.id.editor) update (i.data))
+    fragment[EditorFragment](R.id.editor) update (i.getStringExtra("data")))
+
+  broadcastReceiver(Message.Cursor) { (c, i) ⇒
+    val raw    = i.data[RawCursor]
+    val cursor = Cursor(raw.x, raw.y, i.getStringExtra("sender"))
+    fragment[CursorsFragment](R.id.cursors) update (cursor)
+  }
 }

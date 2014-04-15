@@ -3,9 +3,10 @@ package collab.android
 import spray.json._
 
 object Message {
-  def Join = "collab.android.message.Join"
-  def Code = "collab.android.message.Code"
+  def Join    = "collab.android.message.Join"
+  def Code    = "collab.android.message.Code"
   def Members = "collab.android.message.Members"
+  def Cursor  = "collab.android.message.Cursor"
 }
 
 case class Code(
@@ -20,6 +21,13 @@ case class Member(
 object Member {
   def apply(id: String): Member = Member(id, id)
 }
+
+case class RawCursor(val x: Int, val y: Int)
+
+case class Cursor(
+  var x: Int,
+  var y: Int,
+  var sender: String)
 
 object MessageProtocol extends DefaultJsonProtocol {
 
@@ -46,6 +54,18 @@ object MessageProtocol extends DefaultJsonProtocol {
       value.asJsObject.getFields("id", "name") match {
         case Seq(JsString(id), JsString(name)) ⇒ Member(id, name)
         case _ => throw new DeserializationException("Member expected")
+      }
+  }
+
+  implicit object RawCursorJsonFormat extends RootJsonFormat[RawCursor] {
+    def write(cursor: RawCursor) = JsObject(
+      "x" -> JsNumber(cursor.x),
+      "y" -> JsNumber(cursor.y))
+
+    def read(value: JsValue) =
+      value.asJsObject.getFields("x", "y") match {
+        case Seq(JsNumber(x), JsNumber(y)) ⇒ RawCursor(x.toInt, y.toInt)
+        case _ => throw new DeserializationException("RawCursor expected")
       }
   }
 }
